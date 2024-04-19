@@ -15,9 +15,9 @@ public class PickUpInteractor : IInteractorSubsystem
     }
     #endregion
 
-    public void TryInteract(RaycastHit hit)
+    public void TryInteract(Collider hitCollider)
     {
-        if (hit.collider.TryGetComponent<IPickUpable>(out IPickUpable pickUpable) &&
+        if (hitCollider.TryGetComponent<IPickUpable>(out IPickUpable pickUpable) &&
             Input.GetKeyDown(KeyCode.E) && ItemHoldPoint.CurrentItem == null)
         {
             pickUpable.PickUp(ItemHoldPoint.transform);

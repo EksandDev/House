@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -30,7 +31,7 @@ public class Interactor : MonoBehaviour
             hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
             foreach (var subsystem in _interactorSubsystems)
-                subsystem.TryInteract(hit);
+                subsystem.TryInteract(hit.collider);
         }
 
         AdditionalChecks();
