@@ -8,6 +8,8 @@ public class InteractorInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<PickUpInteractor>().AsSingle();
+        Container.Bind<PhysicalMoveInteractor>().AsSingle();
+        Container.Bind<ClickInteractor>().AsSingle();
         Container.Bind<ItemHoldPoint>().FromInstance(_itemHoldPoint).AsSingle();
     }
 }

@@ -2,7 +2,7 @@
 
 public interface IPickUpable : IInteractable
 {
-    public void PickUp(Transform holdPoint);
+    public void PickUp(ItemHoldPoint holdPoint);
 
     public void ReleaseHoldPoint();
 }

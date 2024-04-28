@@ -3,9 +3,9 @@ using Zenject;
 
 public class PickUpInteractor : IInteractorSubsystem
 {
-    public ItemHoldPoint ItemHoldPoint => _itemHoldPoint;
-
     private ItemHoldPoint _itemHoldPoint;
+
+    public ItemHoldPoint ItemHoldPoint => _itemHoldPoint;
 
     #region Zenject init
     [Inject]
@@ -20,7 +20,7 @@ public class PickUpInteractor : IInteractorSubsystem
         if (hitCollider.TryGetComponent<IPickUpable>(out IPickUpable pickUpable) &&
             Input.GetKeyDown(KeyCode.E) && ItemHoldPoint.CurrentItem == null)
         {
-            pickUpable.PickUp(ItemHoldPoint.transform);
+            pickUpable.PickUp(ItemHoldPoint);
             ItemHoldPoint.CurrentItem = pickUpable;
         }
     }
