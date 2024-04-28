@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Monster : MonoBehaviour
 {
-    protected float TimeToRespawn;
+    protected abstract float TimeToRespawn { get; set; }
 
     public abstract void Activate();
 

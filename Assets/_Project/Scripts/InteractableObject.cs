@@ -2,37 +2,45 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class InteractableObject : MonoBehaviour, IPickUpable
 {
-    private Rigidbody _rigidbody;
-    private Collider _collider;
-    private readonly int _defaultLayer = 0;
-    private readonly int _pickedUpLayer = 6;
+    protected Rigidbody Rigidbody;
+    protected Collider Collider;
+    protected ItemHoldPoint ItemHoldPoint;
+    protected readonly int DefaultLayer = 0;
+    protected readonly int PickedUpLayer = 6;
 
-    public void PickUp(Transform holdPoint)
+    private bool _canPickUp = true;
+
+    public bool CanPickUp { get => _canPickUp; set =>_canPickUp = value; }
+    public Rigidbody ObjectRigidbody { get => Rigidbody; }
+    public ItemHoldPoint HoldPoint { get => ItemHoldPoint; }
+
+    public virtual void PickUp(ItemHoldPoint holdPoint)
     {
-        _rigidbody.isKinematic = true;
-        _collider.isTrigger = true;
-        transform.parent = holdPoint;
-        gameObject.layer = _pickedUpLayer;
+        if (!CanPickUp)
+            return;
+
+        Rigidbody.isKinematic = true;
+        Collider.isTrigger = true;
+        transform.parent = holdPoint.transform;
+        ItemHoldPoint = holdPoint;
+        gameObject.layer = PickedUpLayer;
         StartCoroutine(AnimatePickUp());
     }
 
-    public void ReleaseHoldPoint()
+    public virtual void ReleaseHoldPoint()
     {
-        _rigidbody.isKinematic = false;
-        _collider.isTrigger = false;
+        Rigidbody.isKinematic = false;
+        Collider.isTrigger = false;
         transform.parent = null;
-        gameObject.layer = _defaultLayer;
+        ItemHoldPoint.CurrentItem = null;
+        ItemHoldPoint = null;
+        gameObject.layer = DefaultLayer;
     }
 
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
-    }
-
-    private IEnumerator AnimatePickUp()
+    protected IEnumerator AnimatePickUp()
     {
         DOTween.Sequence().
             Append(transform.DOMove(transform.parent.position, 0.1f)).
@@ -44,4 +52,11 @@ public class InteractableObject : MonoBehaviour, IPickUpable
         transform.position = transform.parent.position;
         transform.rotation = transform.parent.rotation;
     }
+
+    private void Start()
+    {
+        Rigidbody = GetComponent<Rigidbody>();
+        Collider = GetComponent<Collider>();
+    }
+
 }
