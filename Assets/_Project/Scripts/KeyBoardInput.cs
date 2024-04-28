@@ -3,9 +3,22 @@ using Zenject;
 
 public class KeyBoardInput : MonoBehaviour
 {
-    [SerializeField] private float _mouseSensetivity = 10;
+    [SerializeField] private float _mouseSensetivity = 0.1f;
     private PlayerMover _playerMover;
     private PlayerInput _input;
+    public bool AbilityMoveBody
+    {
+        get { return _abilityMoveBody; }
+
+        set { _abilityMoveBody = value; }
+    }
+    public bool AbilityMoveHead
+    {
+        get { return _abilityMoveHead; }
+        set { _abilityMoveHead = value; }
+    }
+    private bool _abilityMoveBody = true;
+    private bool _abilityMoveHead = true;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; // ОТ СЮДА ПОТОМ УБРАТЬ!!! В Setting
@@ -31,11 +44,24 @@ public class KeyBoardInput : MonoBehaviour
     }
     public Vector3 GetInputKeyBoard()
     {
+        if (!_abilityMoveBody)
+        {
+            return Vector3.zero;
+        }
         return _input.Player.Move.ReadValue<Vector3>().normalized;
     }
     public Vector2 GetInputMouse()
     {
-        return _input.Player.MouseMove.ReadValue<Vector2>() * _mouseSensetivity * Time.deltaTime;
+        if (!_abilityMoveHead)
+        {
+            return Vector3.zero;
+        }
+        return _input.Player.MouseMove.ReadValue<Vector2>() * _mouseSensetivity;
+    }
+    public void AbilityToMove(bool value)
+    {
+        _abilityMoveBody = value;
+        _abilityMoveHead = value;
     }
     private void OnEnable()
     {

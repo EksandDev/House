@@ -8,7 +8,7 @@ public class PlayerMover : MonoBehaviour, IMoveable
     private CharacterController _characterController;
     private Vector3 _gravity;
     private float _rotateHeadAngle;
-    private const float _gravityForce = -5f;
+    private const float _gravityForce = -9.81f;
     private void Start()
     {
         _headCam = GetComponentInChildren<Camera>();
@@ -20,13 +20,18 @@ public class PlayerMover : MonoBehaviour, IMoveable
     }
     private void Gravity()
     {
+        if (_characterController.isGrounded)
+        {
+            _gravity.y = _gravityForce;
+            return;
+        }
         _gravity.y += _gravityForce * Time.deltaTime;
-        _characterController.Move(_gravity * Time.deltaTime);
     }
     public void Move(Vector3 directionRaw)
     {
         Vector3 direction = transform.TransformDirection(directionRaw);
-        _characterController.Move(direction * _speed * Time.deltaTime);
+        _characterController.Move(direction * SpeedWalk() * Time.deltaTime);
+        _characterController.Move(_gravity * Time.deltaTime);
     }
     public void RotatePlayer(Vector2 MouseDirection)
     {
@@ -38,11 +43,18 @@ public class PlayerMover : MonoBehaviour, IMoveable
         _rotateHeadAngle += MouseDirectionY;
         _rotateHeadAngle = Mathf.Clamp(_rotateHeadAngle, -90, 90);
         _headCam.transform.localRotation = Quaternion.Euler(_rotateHeadAngle, 0, 0);
-        // _headCam.transform.eulerAngles = new Vector3(_rotateHeadAngle, 0, 0);
     }
     private void RotateBody(float MouseDirectionX)
     {
         transform.Rotate(MouseDirectionX * Vector3.up);
+    }
+    private float SpeedWalk()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            return _speed * 2f;
+        }
+        return _speed;
     }
 }
 
