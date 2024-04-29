@@ -9,12 +9,7 @@ public class Wood : InteractableObject
         if (CurrentPlace != null)
         {
             transform.position = CurrentPlace.transform.position;
-            Rigidbody.isKinematic = false;
-            Collider.isTrigger = false;
-            transform.parent = null;
-            ItemHoldPoint.CurrentItem = null;
-            ItemHoldPoint = null;
-            gameObject.layer = DefaultLayer;
+            base.ReleaseHoldPoint();
         }
     }
 
