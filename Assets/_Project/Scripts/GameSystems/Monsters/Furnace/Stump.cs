@@ -11,7 +11,7 @@ public class Stump : MonoBehaviour
 
     public IEnumerator ChopWood(Log log)
     {
-        if (_placesForWood.All(place => place.IsFull))
+        if (_placesForWood.All(place => place.IsFull) || !log.CanInteract)
             yield break;
 
         log.ReleaseHoldPoint();

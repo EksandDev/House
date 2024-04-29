@@ -12,14 +12,16 @@ public class InteractableObject : MonoBehaviour, IPickUpable
     protected readonly int PickedUpLayer = 6;
 
     private bool _canPickUp = true;
+    private bool _canInteract = true;
 
-    public bool CanPickUp { get => _canPickUp; set =>_canPickUp = value; }
+    public bool CanPickUp { get => _canPickUp; set => _canPickUp = value; }
+    public bool CanInteract { get => _canInteract; }
     public Rigidbody ObjectRigidbody { get => Rigidbody; }
     public ItemHoldPoint HoldPoint { get => ItemHoldPoint; }
 
     public virtual void PickUp(ItemHoldPoint holdPoint)
     {
-        if (!CanPickUp)
+        if (!CanPickUp || !CanInteract)
             return;
 
         Rigidbody.isKinematic = true;
@@ -32,6 +34,9 @@ public class InteractableObject : MonoBehaviour, IPickUpable
 
     public virtual void ReleaseHoldPoint()
     {
+        if (!CanInteract)
+            return;
+
         Rigidbody.isKinematic = false;
         Collider.isTrigger = false;
         transform.parent = null;
@@ -42,13 +47,16 @@ public class InteractableObject : MonoBehaviour, IPickUpable
 
     protected IEnumerator AnimatePickUp()
     {
-        DOTween.Sequence().
+        _canInteract = false;
+
+        Tween tween = DOTween.Sequence().
             Append(transform.DOMove(transform.parent.position, 0.1f)).
             Append(transform.DORotate(transform.parent.position, 0.1f)).
             SetLink(gameObject);
+        
+        yield return tween.WaitForCompletion();
 
-        yield return new WaitForSeconds(0.2f);
-
+        _canInteract = true;
         transform.position = transform.parent.position;
         transform.rotation = transform.parent.rotation;
     }
@@ -58,5 +66,4 @@ public class InteractableObject : MonoBehaviour, IPickUpable
         Rigidbody = GetComponent<Rigidbody>();
         Collider = GetComponent<Collider>();
     }
-
 }
