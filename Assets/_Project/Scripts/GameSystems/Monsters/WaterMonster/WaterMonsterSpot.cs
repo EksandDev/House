@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WaterMonsterSpot : MonsterSpot
@@ -5,6 +6,8 @@ public class WaterMonsterSpot : MonsterSpot
     [SerializeField] private WaterMonster _waterMonsterPrefab;
     [SerializeField] private Transform _target;
     [SerializeField] private WaterMonsterSpot[] _otherSpots;
+    [SerializeField] private HingeJoint _hingeJointPrefab;
+    [SerializeField] private Rigidbody _previousBody;
 
     private float _timeToActivate;
 
@@ -13,6 +16,7 @@ public class WaterMonsterSpot : MonsterSpot
     public override void Activate()
     {
         _waterMonsterPrefab.SetTarget(_target);
+        StartCoroutine(RopeSpawn());
     }
 
     public override void Deactivate()
@@ -28,5 +32,28 @@ public class WaterMonsterSpot : MonsterSpot
     private void Start()
     {
         Activate();
+    }
+
+    private IEnumerator RopeSpawn()
+    {
+        float minusMass = 0.03f;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            Vector3 spawnPoint = _previousBody.transform.GetChild(0).position;
+            HingeJoint joint = Instantiate(_hingeJointPrefab, spawnPoint, _previousBody.transform.rotation);
+            Rigidbody jointRB = joint.GetComponent<Rigidbody>();
+
+            if (jointRB.mass > 1)
+            {
+                minusMass += 0.03f;
+                jointRB.mass -= minusMass;
+            }
+
+            joint.connectedBody = _previousBody;
+            _previousBody = joint.GetComponent<Rigidbody>();
+        }
     }
 }
