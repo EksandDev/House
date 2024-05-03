@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PictureAnimation : MonoBehaviour
 {
-
     [SerializeField] private Animator _animator;
     private Picture _PictureMonster;
     private Coroutine _agressiveStateTime;
