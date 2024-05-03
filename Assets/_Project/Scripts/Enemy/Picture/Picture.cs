@@ -27,6 +27,7 @@ public class Picture : MonsterSpot, IInteractable
     {
         if (_agressive)
         {
+            Debug.Log("Deactivate");
             _agressive = false;
             SubscribeToRespawn();
             transform.Rotate(Vector3.up, 180f);
@@ -44,7 +45,7 @@ public class Picture : MonsterSpot, IInteractable
     private void SubscribeToRespawn()
     {
         _timeCounting.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(5f));
+        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(15f));
     }
     private void UnsubscribeFromRespawn()
     {

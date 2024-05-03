@@ -69,7 +69,7 @@ public class Chest : MonsterSpot
     private void SubscribeToRespawn()
     {
         _timeCounting.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(5f));
+        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(13f));
     }
     private void UnsubscribeFromRespawn()
     {

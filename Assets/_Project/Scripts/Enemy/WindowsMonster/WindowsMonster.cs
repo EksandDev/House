@@ -21,7 +21,7 @@ public class WindowsMonster : MonsterSpot
 
     protected override void SpawnMonster()
     {
-
+        Activate();
     }
     public override void Activate()
     {
@@ -39,7 +39,7 @@ public class WindowsMonster : MonsterSpot
     {
         if (TimeIsUp)
         {
-            Activate();
+            SpawnMonster();
         }
     }
     private void CheckCurtainOpen(bool TimeIsUp)
@@ -62,7 +62,7 @@ public class WindowsMonster : MonsterSpot
     public void SubscribeToDeactivateEnemy()
     {
         _time.TimeIsUp += CheckCurtainOpen;
-        _decontaminationTime = StartCoroutine(_time.TimerCounting(3f));
+        _decontaminationTime = StartCoroutine(_time.TimerCounting(2f));
     }
     private void UnsubscribeFromDeactivateEnemy()
     {
@@ -74,7 +74,7 @@ public class WindowsMonster : MonsterSpot
     private void SubscribeToRespawn()
     {
         _time.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_time.TimerCounting(5f));
+        _spawnTime = StartCoroutine(_time.TimerCounting(7f));
     }
     private void UnsubscribeFromRespawn()
     {

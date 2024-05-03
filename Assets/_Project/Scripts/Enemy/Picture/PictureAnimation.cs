@@ -26,13 +26,14 @@ public class PictureAnimation : MonoBehaviour
         if (_animator.GetFloat("TimeAnimation") > 0.99)
         {
             Debug.Log("Умер от картины!");
+            UnsubscribeFromAnimation();
             return;
         }
         _animator.SetFloat("TimeAnimation", timeAnimation);
     }
     private void SubscribeToAnimation()
     {
-        _agressiveStateTime = StartCoroutine(_time.TimerCounting(7f));
+        _agressiveStateTime = StartCoroutine(_time.TimerCounting(15f));
         _time.TimeAnimation += AnimationUpdate;
     }
     private void UnsubscribeFromAnimation()
