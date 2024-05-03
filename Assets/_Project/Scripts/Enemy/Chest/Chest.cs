@@ -5,10 +5,10 @@ using UnityEngine;
 public class Chest : MonsterSpot
 {
     protected override float TimeToActivate { get; set; }
-    [SerializeField] private GameObject _Pos;
+    [SerializeField] private Transform _Pos;
     [SerializeField] private GameObject _boxLid;
     private Vector3 _startPos;
-    private Vector3 _endPos;
+    private Transform  _endPos;
     private TimeСounting _timeCounting = new();
     private Coroutine _spawnTime;
     private Coroutine _monsterTime;
@@ -18,7 +18,7 @@ public class Chest : MonsterSpot
     {
         SubscribeToRespawn();
         _startPos = _boxLid.transform.position;
-        _endPos = _Pos.transform.position;
+        _endPos = _Pos;
     }
     protected override void SpawnMonster()
     {
@@ -27,7 +27,7 @@ public class Chest : MonsterSpot
     }
     public override void Activate()
     {
-        ChangePosition(_endPos);
+        ChangePosition(_endPos.transform.position);
         UnsubscribeFromRespawn();
         _openInChest = true;
     }
@@ -45,7 +45,7 @@ public class Chest : MonsterSpot
         }
     }
 
-    private void CheckCurtainOpen(bool TimeIsUp)
+    private void CheckChestOpen(bool TimeIsUp)
     {
         if (_openInChest && TimeIsUp)
         {
@@ -58,8 +58,9 @@ public class Chest : MonsterSpot
     {
         if (other.gameObject == _boxLid && _openInChest)
         {
+            other.transform.parent = transform;
             _openInChest = false;
-            ChangePosition(_startPos);
+            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             Deactivate();
             StopCoroutine(_monsterTime);
             UnscribeCheckChestLock();
@@ -81,17 +82,18 @@ public class Chest : MonsterSpot
     #region SubscribeAndUnsubscribeCheckLockChest
     private void SubscribeCheckChestLock()
     {
-        _timeCounting.TimeIsUp += CheckCurtainOpen;
+        _timeCounting.TimeIsUp += CheckChestOpen;
         _monsterTime = StartCoroutine(_timeCounting.TimerCounting(7f));
     }
     private void UnscribeCheckChestLock()
     {
         StopCoroutine(_monsterTime);
-        _timeCounting.TimeIsUp -= CheckTimeIsUp;
+        _timeCounting.TimeIsUp -= CheckChestOpen;
     }
     #endregion
     private void ChangePosition(Vector3 targePos)
     {
         _boxLid.transform.position = targePos;
+        _boxLid.transform.rotation = Quaternion.identity;
     }
 }
