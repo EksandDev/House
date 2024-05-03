@@ -8,7 +8,7 @@ public class Chest : MonsterSpot
     [SerializeField] private Transform _Pos;
     [SerializeField] private GameObject _boxLid;
     private Vector3 _startPos;
-    private Transform  _endPos;
+    private Transform _endPos;
     private TimeСounting _timeCounting = new();
     private Coroutine _spawnTime;
     private Coroutine _monsterTime;
@@ -34,7 +34,6 @@ public class Chest : MonsterSpot
     public override void Deactivate()
     {
         ChangePosition(_startPos);
-        Debug.Log("enemy deactivated beach!!");
         SubscribeToRespawn();
     }
     private void CheckTimeIsUp(bool TimeIsUp)
@@ -49,7 +48,7 @@ public class Chest : MonsterSpot
     {
         if (_openInChest && TimeIsUp)
         {
-            Debug.Log("Проеб!");
+            Debug.Log("Умер от сундука!");
             return;
         }
     }

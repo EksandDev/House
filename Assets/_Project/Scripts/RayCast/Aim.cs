@@ -27,20 +27,29 @@ public class Aim : MonoBehaviour
         _ray = _mainCamera.ScreenPointToRay(Ray_start_position);
         if (Physics.Raycast(_ray, out hit))
         {
-            if (hit.collider.TryGetComponent<Curtain>(out Curtain curtain))
+            if (hit.collider.TryGetComponent<IInteractable>(out IInteractable InteractableObject))
             {
-                if (Input.GetKey(KeyCode.E))
+                if (hit.collider.TryGetComponent<Curtain>(out Curtain curtain))
                 {
-                    curtain.CloseCurtain();
-                    return;
+                    if (Input.GetKey(KeyCode.E))
+                    {
+                        curtain.CloseCurtain();
+                    }
+                    else
+                    {
+                        curtain.OpenCurtain();
+                    }
                 }
-                else
+
+                else if (hit.collider.TryGetComponent<Picture>(out Picture picture))
                 {
-                    curtain.OpenCurtain();
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        picture.Deactivate();
+                    }
                 }
             }
         }
-
     }
 }
 

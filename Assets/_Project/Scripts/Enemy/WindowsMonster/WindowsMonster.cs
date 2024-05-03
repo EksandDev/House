@@ -54,6 +54,7 @@ public class WindowsMonster : MonsterSpot
             UnsubscribeFromDeactivateEnemy();
             StopCoroutine(_decontaminationTime);
             _animator.Play("attack_shift");
+            Debug.Log("Умер от оконного монстра!");
         }
     }
 
