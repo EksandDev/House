@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Curtain : MonoBehaviour
+public class Curtain : MonoBehaviour, IInteractable
 {
     private Animator _animator;
     public bool Open { get; private set; } = true;

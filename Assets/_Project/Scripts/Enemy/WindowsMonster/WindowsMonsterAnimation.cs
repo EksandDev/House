@@ -18,7 +18,7 @@ public class WindowsMonsterAnimation : MonoBehaviour
 
     private IEnumerator ReverseAnimationPlay()
     {
-        _windowsMonster.SubscribeToDecontaminationEnemy();
+        _windowsMonster.SubscribeToDeactivateEnemy();
         float tims = _animator.GetFloat("TimeAnimation");
         while (tims > 0)
         {
