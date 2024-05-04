@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class WindowsMonsterAnimation : MonoBehaviour
 {
-    [SerializeField] private Curtain _curtain;//нужно потом поменять на некий общий тригер ну накинуть интерфейс и сделать прокидывание
+    [SerializeField] private Curtain _curtain;
     private WindowsMonster _windowsMonster;
     private Coroutine _agressiveStateTime;
     private TimeСounting _time = new();
     private Animator _animator;
-    ///в кода присутствуют магические числа на данный момент, но это только пока
+
     private void Start()
     {
         _windowsMonster = GetComponent<WindowsMonster>();
@@ -28,6 +28,7 @@ public class WindowsMonsterAnimation : MonoBehaviour
         }
         yield break;
     }
+
     private void AnimationUpdate(float timeAnimation)
     {
         if (!_curtain.Open)
@@ -36,18 +37,28 @@ public class WindowsMonsterAnimation : MonoBehaviour
             EnemyDeactivated();
             return;
         }
+        if(timeAnimation>0.99){
+            Debug.Log("Умер от оконного монстра!");
+            EnemyDeactivated();
+        }
         _animator.SetFloat("TimeAnimation", timeAnimation);
     }
+
+#region SubscribeAndUnsubscribeAnimation
     private void SubscribeToAnimation()
     {
         _agressiveStateTime = StartCoroutine(_time.TimerCounting(10f));
         _time.TimeAnimation += AnimationUpdate;
     }
+
     private void UnsubscribeFromAnimation()
     {
         StopCoroutine(_agressiveStateTime);
         _time.TimeAnimation -= AnimationUpdate;
     }
+
+#endregion 
+
     private void EnemyDeactivated()
     {
         UnsubscribeFromAnimation();

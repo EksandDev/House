@@ -3,26 +3,30 @@ using UnityEngine;
 public class PictureAnimation : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    private Picture _PictureMonster;
+    private Picture _pictureMonster;
     private Coroutine _agressiveStateTime;
     private TimeСounting _time = new();
+
     private void Start()
     {
-        _PictureMonster = GetComponent<Picture>();
-        _PictureMonster.EnemyIsActivated += SubscribeToAnimation;
+        _pictureMonster = GetComponent<Picture>();
+        Activate();
     }
+
     private void AnimationUpdate(float timeAnimation)
     {
-        if (!_PictureMonster._agressive)
+
+        if (!_pictureMonster._agressive)
         {
             _animator.SetFloat("TimeAnimation", 0);
-            EnemyDeactivated();
+            Deactivated();
             return;
         }
 
         if (_animator.GetFloat("TimeAnimation") > 0.99)
         {
             Debug.Log("Умер от картины!");
+             _pictureMonster.EnemyIsActivated -= SubscribeToAnimation; 
             UnsubscribeFromAnimation();
             return;
         }
@@ -43,10 +47,16 @@ public class PictureAnimation : MonoBehaviour
         _time.TimeAnimation -= AnimationUpdate;
     }
     #endregion
-    private void EnemyDeactivated()
+
+    private void Activate()
+    {
+       _pictureMonster.EnemyIsActivated += SubscribeToAnimation; 
+    }
+
+    private void Deactivated()
     {
         UnsubscribeFromAnimation();
-        _PictureMonster.Deactivate();
+        _pictureMonster.Deactivate();
     }
 
 }

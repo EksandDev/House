@@ -1,40 +1,42 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof (WindowsMonsterAnimation))]
 public class WindowsMonster : MonsterSpot
 {
-    protected override float TimeToActivate { get; set; }
     [SerializeField] private GameObject _Mesh;
     [SerializeField] private Curtain _curtain;
-    private Animator _animator;
-    private TimeСounting _time = new();
     private Coroutine _spawnTime;
     private Coroutine _decontaminationTime;
+    private TimeСounting _time = new();
+    protected override float TimeToActivate { get; set; } = 10f;
     public Action EnemyIsActivated;
 
     private void Start()
     {
         ChangeEnemyVisibility(false);
         SubscribeToRespawn();
-        _animator = GetComponent<Animator>();
     }
 
     protected override void SpawnMonster()
     {
         Activate();
     }
+
     public override void Activate()
     {
         ChangeEnemyVisibility(true);
         EnemyIsActivated?.Invoke();
         UnsubscribeFromRespawn();
     }
+
     public override void Deactivate()
     {
         ChangeEnemyVisibility(false);
         UnsubscribeFromDeactivateEnemy();
-        SubscribeToRespawn();   //нужно поработать с кнопкой чтоб счетчик начинался когда шторы будут открыты
+        SubscribeToRespawn();
     }
+
     private void CheckTimeIsUp(bool TimeIsUp)
     {
         if (TimeIsUp)
@@ -42,6 +44,7 @@ public class WindowsMonster : MonsterSpot
             SpawnMonster();
         }
     }
+
     private void CheckCurtainOpen(bool TimeIsUp)
     {
         if (!_curtain.Open && TimeIsUp)
@@ -49,11 +52,11 @@ public class WindowsMonster : MonsterSpot
             Deactivate();
             return;
         }
+
         else if (_curtain.Open && !TimeIsUp)
         {
             UnsubscribeFromDeactivateEnemy();
             StopCoroutine(_decontaminationTime);
-            _animator.Play("attack_shift");
             Debug.Log("Умер от оконного монстра!");
         }
     }
@@ -68,20 +71,23 @@ public class WindowsMonster : MonsterSpot
     {
         _time.TimeIsUp -= CheckCurtainOpen;
     }
+
     #endregion
 
     #region SubscribeAndUnsubscribeRespawn
     private void SubscribeToRespawn()
     {
         _time.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_time.TimerCounting(7f));
+        _spawnTime = StartCoroutine(_time.TimerCounting(TimeToActivate));
     }
     private void UnsubscribeFromRespawn()
     {
         StopCoroutine(_spawnTime);
         _time.TimeIsUp -= CheckTimeIsUp;
     }
+
     #endregion
+
     private void ChangeEnemyVisibility(bool state)
     {
         _Mesh.gameObject.SetActive(state);

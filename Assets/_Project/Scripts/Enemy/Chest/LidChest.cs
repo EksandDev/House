@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LidChest : MonoBehaviour
 {
-    [SerializeField] private Vector3 _endPos;
+    [SerializeField] private GameObject _endPos;
     private Vector3 _startPos;
 
     private void Start()
@@ -22,6 +22,6 @@ public class LidChest : MonoBehaviour
     }
     public void EndPosition()
     {
-        ChangePosition(_endPos);
+        ChangePosition(_endPos.transform.position);
     }
 }
