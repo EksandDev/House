@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Picture : MonsterSpot, IInteractable
 {
-    private TimeСounting _timeCounting = new();
     private Coroutine _spawnTime;
     public Action EnemyIsActivated;
+    private TimeСounting _timeCounting = new();
     public bool _agressive;
+    protected override float TimeToActivate { get; set; }
     private void Start()
     {
         SubscribeToRespawn();
     }
-    protected override float TimeToActivate { get; set; }
     protected override void SpawnMonster()
     {
         Activate();

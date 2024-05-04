@@ -2,39 +2,39 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(ChestTrigger))]
 public class Chest : MonsterSpot
 {
-    protected override float TimeToActivate { get; set; }
-    [SerializeField] private Transform _Pos;
-    [SerializeField] private GameObject _boxLid;
-    private Vector3 _startPos;
-    private Transform _endPos;
-    private TimeСounting _timeCounting = new();
+    private LidChest _lidChest;
     private Coroutine _spawnTime;
     private Coroutine _monsterTime;
-    private bool _openInChest;
+    private TimeСounting _timeCounting = new();
+    public bool OpenInChest { get; private set; }
+    protected override float TimeToActivate { get; set; }
 
     private void Start()
     {
+        TimeToActivate = 7f;
         SubscribeToRespawn();
-        _startPos = _boxLid.transform.position;
-        _endPos = _Pos;
     }
     protected override void SpawnMonster()
     {
         Activate();
+        UnsubscribeFromRespawn();
         SubscribeCheckChestLock();
     }
     public override void Activate()
     {
-        ChangePosition(_endPos.transform.position);
-        UnsubscribeFromRespawn();
-        _openInChest = true;
+        _lidChest.EndPosition();
+        OpenInChest = true;
     }
     public override void Deactivate()
     {
-        ChangePosition(_startPos);
+        UnscribeCheckChestLock();
         SubscribeToRespawn();
+        StopCoroutine(_monsterTime);
+        _lidChest.StartPosition();
+        OpenInChest = false;
     }
     private void CheckTimeIsUp(bool TimeIsUp)
     {
@@ -43,33 +43,19 @@ public class Chest : MonsterSpot
             SpawnMonster();
         }
     }
-
     private void CheckChestOpen(bool TimeIsUp)
     {
-        if (_openInChest && TimeIsUp)
+        if (OpenInChest && TimeIsUp)
         {
             Debug.Log("Умер от сундука!");
             return;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == _boxLid && _openInChest)
-        {
-            other.transform.parent = transform;
-            _openInChest = false;
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            Deactivate();
-            StopCoroutine(_monsterTime);
-            UnscribeCheckChestLock();
         }
     }
     #region SubscribeAndUnsubscribeRespawn
     private void SubscribeToRespawn()
     {
         _timeCounting.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(13f));
+        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
     }
     private void UnsubscribeFromRespawn()
     {
@@ -82,7 +68,7 @@ public class Chest : MonsterSpot
     private void SubscribeCheckChestLock()
     {
         _timeCounting.TimeIsUp += CheckChestOpen;
-        _monsterTime = StartCoroutine(_timeCounting.TimerCounting(7f));
+        _monsterTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
     }
     private void UnscribeCheckChestLock()
     {
@@ -90,9 +76,4 @@ public class Chest : MonsterSpot
         _timeCounting.TimeIsUp -= CheckChestOpen;
     }
     #endregion
-    private void ChangePosition(Vector3 targePos)
-    {
-        _boxLid.transform.position = targePos;
-        _boxLid.transform.rotation = Quaternion.identity;
-    }
 }

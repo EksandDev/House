@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PictureAnimation : MonoBehaviour
@@ -28,8 +26,12 @@ public class PictureAnimation : MonoBehaviour
             UnsubscribeFromAnimation();
             return;
         }
+
         _animator.SetFloat("TimeAnimation", timeAnimation);
     }
+
+
+    #region SubscribeAndUnsubscribeAnimation
     private void SubscribeToAnimation()
     {
         _agressiveStateTime = StartCoroutine(_time.TimerCounting(15f));
@@ -40,6 +42,7 @@ public class PictureAnimation : MonoBehaviour
         StopCoroutine(_agressiveStateTime);
         _time.TimeAnimation -= AnimationUpdate;
     }
+    #endregion
     private void EnemyDeactivated()
     {
         UnsubscribeFromAnimation();
