@@ -1,17 +1,12 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof (WindowsMonsterAnimation))]
-public class WindowsMonster : MonsterSpot
+[RequireComponent(typeof(WindowsMonsterAnimation))]
+public class WindowsMonster : EnemyMain
 {
     [SerializeField] private GameObject _Mesh;
     [SerializeField] private Curtain _curtain;
-    private Coroutine _spawnTime;
     private Coroutine _decontaminationTime;
-    private TimeСounting _time = new();
-    protected override float TimeToActivate { get; set; } = 10f;
-    public Action EnemyIsActivated;
-
     private void Start()
     {
         ChangeEnemyVisibility(false);
@@ -37,13 +32,6 @@ public class WindowsMonster : MonsterSpot
         SubscribeToRespawn();
     }
 
-    private void CheckTimeIsUp(bool TimeIsUp)
-    {
-        if (TimeIsUp)
-        {
-            SpawnMonster();
-        }
-    }
 
     private void CheckCurtainOpen(bool TimeIsUp)
     {
@@ -64,26 +52,12 @@ public class WindowsMonster : MonsterSpot
     #region SubscribeAndUnsubscribeDeactivate
     public void SubscribeToDeactivateEnemy()
     {
-        _time.TimeIsUp += CheckCurtainOpen;
-        _decontaminationTime = StartCoroutine(_time.TimerCounting(2f));
+        _timeCounting.TimeIsUp += CheckCurtainOpen;
+        _decontaminationTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
     }
     private void UnsubscribeFromDeactivateEnemy()
     {
-        _time.TimeIsUp -= CheckCurtainOpen;
-    }
-
-    #endregion
-
-    #region SubscribeAndUnsubscribeRespawn
-    private void SubscribeToRespawn()
-    {
-        _time.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_time.TimerCounting(TimeToActivate));
-    }
-    private void UnsubscribeFromRespawn()
-    {
-        StopCoroutine(_spawnTime);
-        _time.TimeIsUp -= CheckTimeIsUp;
+        _timeCounting.TimeIsUp -= CheckCurtainOpen;
     }
 
     #endregion

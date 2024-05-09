@@ -1,14 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ChestTrigger))]
-public class Chest : MonsterSpot
+public class Chest : EnemyMain
 {
     private LidChest _lidChest;
-    private Coroutine _spawnTime;
     private Coroutine _monsterTime;
-    private TimeСounting _timeCounting = new();
     public bool OpenInChest { get; private set; }
-    protected override float TimeToActivate { get; set; } = 7f;
 
     private void Start()
     {
@@ -38,14 +35,6 @@ public class Chest : MonsterSpot
         OpenInChest = false;
     }
 
-    private void CheckTimeIsUp(bool TimeIsUp)
-    {
-        if (TimeIsUp)
-        {
-            SpawnMonster();
-        }
-    }
-
     private void CheckChestIsOpen(bool TimeIsUp)
     {
         if (OpenInChest && TimeIsUp)
@@ -54,20 +43,6 @@ public class Chest : MonsterSpot
             return;
         }
     }
-
-    #region SubscribeAndUnsubscribeRespawn
-    private void SubscribeToRespawn()
-    {
-        _timeCounting.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
-    }
-
-    private void UnsubscribeFromRespawn()
-    {
-        StopCoroutine(_spawnTime);
-        _timeCounting.TimeIsUp -= CheckTimeIsUp;
-    }
-    #endregion
 
     #region SubscribeAndUnsubscribeCheckLockChest
     private void SubscribeCheckChestLock()
