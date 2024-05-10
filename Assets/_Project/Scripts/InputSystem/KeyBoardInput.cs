@@ -9,7 +9,6 @@ public class KeyBoardInput : MonoBehaviour
     public bool AbilityMoveBody
     {
         get { return _abilityMoveBody; }
-
         set { _abilityMoveBody = value; }
     }
     public bool AbilityMoveHead

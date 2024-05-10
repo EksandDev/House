@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Picture : EnemyMain, IInteractable
+public class Picture : Enemy, IInteractable
 {
     public bool _agressive;
 
@@ -10,16 +10,10 @@ public class Picture : EnemyMain, IInteractable
         SubscribeToRespawn();
     }
 
-    protected override void SpawnMonster()
-    {
-        Activate();
-        _agressive = true;
-        EnemyIsActivated?.Invoke();
-    }
-
     public override void Activate()
     {
-        UnsubscribeFromRespawn();
+        _agressive = true;
+        EnemyIsActivated?.Invoke();
     }
 
     public override void Deactivate()

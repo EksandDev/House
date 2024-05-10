@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(WindowsMonsterAnimation))]
-public class WindowsMonster : EnemyMain
+public class WindowsMonster : Enemy
 {
     [SerializeField] private GameObject _Mesh;
     [SerializeField] private Curtain _curtain;
@@ -13,16 +13,10 @@ public class WindowsMonster : EnemyMain
         SubscribeToRespawn();
     }
 
-    protected override void SpawnMonster()
-    {
-        Activate();
-    }
-
     public override void Activate()
     {
         ChangeEnemyVisibility(true);
         EnemyIsActivated?.Invoke();
-        UnsubscribeFromRespawn();
     }
 
     public override void Deactivate()
@@ -53,7 +47,7 @@ public class WindowsMonster : EnemyMain
     public void SubscribeToDeactivateEnemy()
     {
         _timeCounting.TimeIsUp += CheckCurtainOpen;
-        _decontaminationTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
+        _decontaminationTime = StartCoroutine(_timeCounting.TimerCounting(2f));
     }
     private void UnsubscribeFromDeactivateEnemy()
     {

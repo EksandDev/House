@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ChestTrigger))]
-public class Chest : EnemyMain
+public class Chest : Enemy
 {
     private LidChest _lidChest;
     private Coroutine _monsterTime;
@@ -9,19 +9,13 @@ public class Chest : EnemyMain
 
     private void Start()
     {
-        _lidChest = GetComponentInChildren<LidChest>();
         SubscribeToRespawn();
-    }
-
-    protected override void SpawnMonster()
-    {
-        Activate();
-        UnsubscribeFromRespawn();
-        SubscribeCheckChestLock();
+        _lidChest = GetComponentInChildren<LidChest>();
     }
 
     public override void Activate()
     {
+        SubscribeCheckChestLock();
         _lidChest.EndPosition();
         OpenInChest = true;
     }

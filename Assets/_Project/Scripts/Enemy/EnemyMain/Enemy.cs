@@ -1,30 +1,24 @@
 using System;
 using UnityEngine;
 
-public class EnemyMain : MonsterSpot
+public abstract class Enemy : MonsterSpot
 {
     protected override float TimeToActivate { get; set; } = 10f;
     private Coroutine _spawnTime;
     private protected TimeСounting _timeCounting = new();
     public Action EnemyIsActivated;
-    public override void Activate()
-    {
-    }
-
-    public override void Deactivate()
-    {
-    }
-
-    protected override void SpawnMonster()
-    {
-    }
-
     private protected void CheckTimeIsUp(bool TimeIsUp)
     {
         if (TimeIsUp)
         {
             SpawnMonster();
+            UnsubscribeFromRespawn();
         }
+    }
+
+    protected override void SpawnMonster()
+    {
+        Activate();
     }
 
     #region SubscribeAndUnsubscribeRespawn
