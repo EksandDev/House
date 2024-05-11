@@ -4,7 +4,6 @@ using UnityEngine;
 public class Picture : Enemy, IInteractable
 {
     public bool _agressive;
-
     private void Start()
     {
         SubscribeToRespawn();

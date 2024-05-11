@@ -18,7 +18,7 @@ public class WindowsMonsterAnimation : MonoBehaviour
 
     private IEnumerator ReverseAnimationPlay()
     {
-        _windowsMonster.SubscribeToDeactivateEnemy();
+        _windowsMonster.SubscribeCheckParametr();
         float tims = _animator.GetFloat("TimeAnimation");
         while (tims > 0)
         {
@@ -37,14 +37,15 @@ public class WindowsMonsterAnimation : MonoBehaviour
             EnemyDeactivated();
             return;
         }
-        if(timeAnimation>0.99){
+        if (timeAnimation > 0.99)
+        {
             Debug.Log("Умер от оконного монстра!");
             EnemyDeactivated();
         }
         _animator.SetFloat("TimeAnimation", timeAnimation);
     }
 
-#region SubscribeAndUnsubscribeAnimation
+    #region SubscribeAndUnsubscribeAnimation
     private void SubscribeToAnimation()
     {
         _agressiveStateTime = StartCoroutine(_time.TimerCounting(10f));
@@ -56,8 +57,7 @@ public class WindowsMonsterAnimation : MonoBehaviour
         StopCoroutine(_agressiveStateTime);
         _time.TimeAnimation -= AnimationUpdate;
     }
-
-#endregion 
+    #endregion
 
     private void EnemyDeactivated()
     {

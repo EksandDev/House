@@ -6,28 +6,26 @@ public class WindowsMonster : Enemy
 {
     [SerializeField] private GameObject _Mesh;
     [SerializeField] private Curtain _curtain;
-    private Coroutine _decontaminationTime;
     private void Start()
     {
-        ChangeEnemyVisibility(false);
+        ChangeEnemyVisibility(_Mesh, false);
         SubscribeToRespawn();
     }
 
     public override void Activate()
     {
-        ChangeEnemyVisibility(true);
+        ChangeEnemyVisibility(_Mesh, true);
         EnemyIsActivated?.Invoke();
     }
 
     public override void Deactivate()
     {
-        ChangeEnemyVisibility(false);
-        UnsubscribeFromDeactivateEnemy();
+        ChangeEnemyVisibility(_Mesh, false);
+        UnscribeCheckParametr();
         SubscribeToRespawn();
     }
 
-
-    private void CheckCurtainOpen(bool TimeIsUp)
+    public override void CheckParameter(bool TimeIsUp)
     {
         if (!_curtain.Open && TimeIsUp)
         {
@@ -37,27 +35,9 @@ public class WindowsMonster : Enemy
 
         else if (_curtain.Open && !TimeIsUp)
         {
-            UnsubscribeFromDeactivateEnemy();
-            StopCoroutine(_decontaminationTime);
+            UnscribeCheckParametr();
             Debug.Log("Умер от оконного монстра!");
         }
     }
 
-    #region SubscribeAndUnsubscribeDeactivate
-    public void SubscribeToDeactivateEnemy()
-    {
-        _timeCounting.TimeIsUp += CheckCurtainOpen;
-        _decontaminationTime = StartCoroutine(_timeCounting.TimerCounting(2f));
-    }
-    private void UnsubscribeFromDeactivateEnemy()
-    {
-        _timeCounting.TimeIsUp -= CheckCurtainOpen;
-    }
-
-    #endregion
-
-    private void ChangeEnemyVisibility(bool state)
-    {
-        _Mesh.gameObject.SetActive(state);
-    }
 }

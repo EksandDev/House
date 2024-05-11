@@ -4,7 +4,6 @@ using UnityEngine;
 public class Chest : Enemy
 {
     private LidChest _lidChest;
-    private Coroutine _monsterTime;
     public bool OpenInChest { get; private set; }
 
     private void Start()
@@ -15,21 +14,21 @@ public class Chest : Enemy
 
     public override void Activate()
     {
-        SubscribeCheckChestLock();
+        SubscribeCheckParametr();
         _lidChest.EndPosition();
         OpenInChest = true;
     }
 
     public override void Deactivate()
     {
-        UnscribeCheckChestLock();
+        UnscribeCheckParametr();
         SubscribeToRespawn();
-        StopCoroutine(_monsterTime);
+        StopCoroutine(_parametrTime);
         _lidChest.StartPosition();
         OpenInChest = false;
     }
 
-    private void CheckChestIsOpen(bool TimeIsUp)
+    public override void CheckParameter(bool TimeIsUp)
     {
         if (OpenInChest && TimeIsUp)
         {
@@ -37,17 +36,4 @@ public class Chest : Enemy
             return;
         }
     }
-
-    #region SubscribeAndUnsubscribeCheckLockChest
-    private void SubscribeCheckChestLock()
-    {
-        _timeCounting.TimeIsUp += CheckChestIsOpen;
-        _monsterTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
-    }
-    private void UnscribeCheckChestLock()
-    {
-        StopCoroutine(_monsterTime);
-        _timeCounting.TimeIsUp -= CheckChestIsOpen;
-    }
-    #endregion
 }
