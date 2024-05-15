@@ -6,8 +6,11 @@ public class WindowsMonster : Enemy
 {
     [SerializeField] private GameObject _Mesh;
     [SerializeField] private Curtain _curtain;
+    private WindowsMonsterAnimation _animationComponent;
+
     private void Start()
     {
+        _animationComponent = GetComponent<WindowsMonsterAnimation>();
         ChangeEnemyVisibility(_Mesh, false);
         SubscribeToRespawn();
     }
@@ -35,8 +38,8 @@ public class WindowsMonster : Enemy
 
         else if (_curtain.Open && !TimeIsUp)
         {
+            _animationComponent.SetTimeAnimation(0.2f);
             UnscribeCheckParametr();
-            Debug.Log("Умер от оконного монстра!");
         }
     }
 

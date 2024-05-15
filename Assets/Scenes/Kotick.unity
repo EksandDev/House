@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b29b9012297c3438b7b0613432b441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeParametr: 10
+  _timeParameter: 5
 --- !u!65 &67751750
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8097,7 +8097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3d3e0c9aa5f4944af09e739bcb8f81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeParametr: 2
+  _timeParameter: 2
   _Mesh: {fileID: 1708056017}
   _curtain: {fileID: 920287440}
 --- !u!114 &2218055024855164384
