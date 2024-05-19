@@ -1,54 +1,66 @@
 
-using System.Collections;
-using System.Linq.Expressions;
-using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class ShakerCam : MonoBehaviour
 {
-private bool _walking;
-private Vector3 _startPos;
-private Vector3 _endPos;
-[SerializeField] private float _speedWalking = 0.5f;
-[SerializeField] private float _testKf=0.01f;
+    [SerializeField] private bool _enable = true;
+    [SerializeField, Range(0, 0.1f)] private float _amplitude = 0.015f;
+    [SerializeField, Range(0, 30f)] private float _frequency = 10f;
 
-private void Start() {
-    _startPos = transform.position;
-    _endPos = transform.position + Vector3.down/20;
-}
-    private void Update() {
+    [SerializeField] private Transform _camera = null;
+    [SerializeField] private Transform _cameraHolder = null;
 
-        if(Input.GetKeyDown(KeyCode.W)&!_walking)
-        {
-           Debug.Log("ok");
-           StartCoroutine(ShackerShaker());
-        }
-    }
+    private float _toggleSpeed = 3.0f;
+    private Vector3 _startPos;
+    private CharacterController _controller;
 
-    private IEnumerator ShackerShaker()
+
+    private void Start()
     {
-
-        while(Input.GetKey(KeyCode.W)){
-        _walking = true;
-        // transform.DOMoveY(transform.position.y-0.1f,0.4f);
-        StartCoroutine(MoveCam(Vector3.down/15));
-        Debug.Log("1");
-        yield return new WaitForSeconds(_speedWalking);
-        StartCoroutine(MoveCam(Vector3.up/15));
-        Debug.Log("2");
-        // transform.Translate(Vector3.up*Time.deltaTime, Space.Self);
-        // transform.DOMoveY(transform.position.y+0.1f,0.4f);
-        yield return new WaitForSeconds(_speedWalking);
-        }
-        _walking = false;
+        _controller = GetComponent<CharacterController>();
+        _startPos = _camera.localPosition;
     }
 
-    private IEnumerator MoveCam(Vector3 targetPos){
-        Vector3 MoveY = transform.localPosition + targetPos;
-        while(transform.localPosition.y != MoveY.y){
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, MoveY, _testKf);
-       
-        yield return null;
-        }
+    private void Update()
+    {
+        if (!_enable) return;
+        CheckMotion();
+        ResetPosition();
+        _camera.LookAt(FocusTarget());
+    }
+
+    private void PlayMotion(Vector3 motion)
+    {
+        _camera.localPosition += motion;
+    }
+
+    private void CheckMotion()
+    {
+        float speed = new Vector3(_controller.velocity.x, 0, _controller.velocity.z).magnitude;
+        // if (speed < _toggleSpeed) return;
+        if (!_controller.isGrounded) return;
+        PlayMotion(FootStepMotion());
+    }
+
+    private Vector3 FootStepMotion()
+    {
+        Vector3 pos = Vector3.zero;
+        pos.y += Mathf.Sin(Time.time * _frequency) * _amplitude;
+        pos.x += Mathf.Cos(Time.time * _frequency / 2) * _amplitude * 2;
+        return pos;
+    }
+
+    private void ResetPosition()
+    {
+        if (_camera.localPosition == _startPos) return;
+        _camera.localPosition = Vector3.Lerp(_camera.localPosition, _startPos, 1 * Time.deltaTime);
+    }
+
+    private Vector3 FocusTarget()
+    {
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + _cameraHolder.localPosition.y, transform.position.z);
+        pos += _cameraHolder.forward * 15f;
+        return pos;
     }
 }
