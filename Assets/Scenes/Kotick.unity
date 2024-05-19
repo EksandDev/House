@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -717,8 +717,8 @@ Transform:
   m_GameObject: {fileID: 182652001}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.104516, y: 0.05380374, z: -18.849411}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.9087, y: 0.05380374, z: -41.742}
+  m_LocalScale: {x: 3.5913, y: 1, z: 4.8154}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 882194934}
@@ -2402,6 +2402,26 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1056570267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7979638894891444122, guid: 46fb7fea0871c1f41b4280118110682a,
+    type: 3}
+  m_PrefabInstance: {fileID: 2583487254316893145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1056570272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056570267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42fdd792e4a31f7449f3da2e725e9ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedWalking: 0.3
+  _testKf: 0.007
 --- !u!1 &1061325859
 GameObject:
   m_ObjectHideFlags: 0
@@ -4506,7 +4526,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 82467063cba6d7b4ea5c025312998508,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8126,6 +8146,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PictureAll
       objectReference: {fileID: 0}
+    - target: {fileID: 712201763481801447, guid: 55d809283b44a7d4892c5663e914201f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3118029060315760974, guid: 55d809283b44a7d4892c5663e914201f,
         type: 3}
       propertyPath: TimeParametr
@@ -8197,7 +8222,7 @@ PrefabInstance:
     - target: {fileID: 4669823859642585029, guid: 46fb7fea0871c1f41b4280118110682a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.687
+      value: 19.62
       objectReference: {fileID: 0}
     - target: {fileID: 4669823859642585029, guid: 46fb7fea0871c1f41b4280118110682a,
         type: 3}
@@ -8207,7 +8232,7 @@ PrefabInstance:
     - target: {fileID: 4669823859642585029, guid: 46fb7fea0871c1f41b4280118110682a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -25.55
+      value: -26.49
       objectReference: {fileID: 0}
     - target: {fileID: 4669823859642585029, guid: 46fb7fea0871c1f41b4280118110682a,
         type: 3}
@@ -8266,6 +8291,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7036974027847313396}
+    - targetCorrespondingSourceObject: {fileID: 7979638894891444122, guid: 46fb7fea0871c1f41b4280118110682a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1056570272}
   m_SourcePrefab: {fileID: 100100000, guid: 46fb7fea0871c1f41b4280118110682a, type: 3}
 --- !u!1001 &6717441096300421276
 PrefabInstance:
@@ -8334,6 +8363,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ParentWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438705791100353282, guid: aebb2827f79b8fc4dac76987552ade51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8462,7 +8496,7 @@ PrefabInstance:
     - target: {fileID: 954520103893045945, guid: 991f1ee9f6f74ce44bbb95ea903f9628,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1022267931226216390, guid: 991f1ee9f6f74ce44bbb95ea903f9628,
         type: 3}
