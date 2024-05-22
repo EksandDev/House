@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShakerCam : MonoBehaviour
 {
     [SerializeField] private bool _enable = true;
-    [SerializeField, Range(0, 0.1f)] private float _amplitude = 0.015f;
+    [SerializeField, Range(0, 0.05f)] private float _amplitude = 0.015f;
     [SerializeField, Range(0, 30f)] private float _frequency = 10f;
 
     [SerializeField] private Transform _camera = null;
@@ -14,10 +14,12 @@ public class ShakerCam : MonoBehaviour
     private float _toggleSpeed = 3.0f;
     private Vector3 _startPos;
     private CharacterController _controller;
+    private PlayerMover _playerMover;
 
 
     private void Start()
     {
+        _playerMover = GetComponent<PlayerMover>();
         _controller = GetComponent<CharacterController>();
         _startPos = _camera.localPosition;
     }
@@ -38,8 +40,8 @@ public class ShakerCam : MonoBehaviour
     private void CheckMotion()
     {
         float speed = new Vector3(_controller.velocity.x, 0, _controller.velocity.z).magnitude;
-        // if (speed < _toggleSpeed) return;
-        if (!_controller.isGrounded) return;
+        if (speed <= _toggleSpeed) return;
+        if (!_playerMover.IsGround) return;
         PlayMotion(FootStepMotion());
     }
 

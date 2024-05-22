@@ -14,7 +14,6 @@ public class Aim : MonoBehaviour
     }
     private void Update()
     {
-
         RayCast();
     }
 

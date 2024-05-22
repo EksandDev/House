@@ -9,6 +9,7 @@ public class PlayerMover : MonoBehaviour, IMoveable
     private Vector3 _gravity;
     private float _rotateHeadAngle;
     private const float _gravityForce = -9.81f;
+    public bool IsGround { get; private set; }
     private void Start()
     {
         _headCam = GetComponentInChildren<Camera>();
@@ -16,11 +17,24 @@ public class PlayerMover : MonoBehaviour, IMoveable
     }
     private void FixedUpdate()
     {
+        CheckIsGround();
         Gravity();
+    }
+
+    private void CheckIsGround()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            IsGround = true;
+            return;
+        }
+        IsGround = false;
     }
     private void Gravity()
     {
-        if (_characterController.isGrounded)
+        if (IsGround)
         {
             _gravity.y = _gravityForce;
             return;
@@ -30,8 +44,8 @@ public class PlayerMover : MonoBehaviour, IMoveable
     public void Move(Vector3 directionRaw)
     {
         Vector3 direction = transform.TransformDirection(directionRaw);
-        _characterController.Move(direction * SpeedWalk() * Time.deltaTime);
         _characterController.Move(_gravity * Time.deltaTime);
+        _characterController.Move(direction * SpeedWalk() * Time.deltaTime);
     }
     public void RotatePlayer(Vector2 MouseDirection)
     {
