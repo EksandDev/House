@@ -47,6 +47,13 @@ public class Aim : MonoBehaviour
                         picture.Deactivate();
                     }
                 }
+                else if (hit.collider.TryGetComponent<Plate>(out Plate plate))
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                    }
+                }
+
             }
         }
     }
