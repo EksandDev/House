@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class Thimbles : MonoBehaviour
 {
     private Plate[] _plates = new Plate[3];
+    private int _numberOfMovements;
+    private int _counter;
     private Plate _firstPlate;
     private Plate _secondPlate;
     private Card _card;
@@ -14,21 +17,26 @@ public class Thimbles : MonoBehaviour
     {
         _card = GetComponentInChildren<Card>(true);
         _plates = GetComponentsInChildren<Plate>();
-        Invoke(nameof(PlateSelection), 1f);
+        PlateSelectionFirst();
+        PlateSelectionSecond();
+    }
+    
+    private void PlateMovements(){
+    
     }
 
-
-    private void CheckPlate(Plate plate)
+    private void PlateSelectionFirst()
     {
-
-    }
-    private void PlateSelection()
-    {
+        _counter++;
+        _numberOfMovements = Random.Range(0,_plates.Length);
         _firstPlate = _plates[RandomNumber()];
-        _secondPlate = _plates[RandomNumber()];
         _firstPlate.AnimationSelected();
         TeleportCard();
         _firstPlate.Animations += MotionPlate;
+    }
+    private void PlateSelectionSecond()
+    {
+        _secondPlate = _plates[RandomNumber()];
     }
 
     private int RandomNumber()
@@ -55,9 +63,13 @@ public class Thimbles : MonoBehaviour
 
     private void AnimationPlate()
     {
+        Debug.Log("ok");
         _firstPlate.CardAdd(_card);
-        _firstPlate.transform.DOLocalMove(_secondPlate.transform.localPosition, 0.5f);
-        _secondPlate.transform.DOLocalMove(_firstPlate.transform.localPosition, 0.5f);
+        DOTween.Sequence()
+        .Append(_firstPlate.transform.DOLocalMove(_secondPlate.transform.localPosition, 0.5f))
+        .Append(_secondPlate.transform.DOLocalMove(_firstPlate.transform.localPosition, 0.5f))
+        .OnComplete(PlateSelectionSecond)
+        .SetLoops(3);
     }
 
 

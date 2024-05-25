@@ -51,6 +51,7 @@ public class Aim : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.E))
                     {
+                        
                     }
                 }
 
