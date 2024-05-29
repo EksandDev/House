@@ -1,18 +1,18 @@
+
 using System.Collections;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Thimbles : MonoBehaviour
 {
     private Plate[] _plates = new Plate[3];
-    private int _numberOfMovements;
-    private int _counter;
     private Plate _firstPlate;
     private Plate _secondPlate;
     private Card _card;
+    [SerializeField] private Vector3 _one;
+    [SerializeField] private Vector3 _two;
 
-
+    private Bezie bezie = new();
     private void Start()
     {
         _card = GetComponentInChildren<Card>(true);
@@ -20,15 +20,9 @@ public class Thimbles : MonoBehaviour
         PlateSelectionFirst();
         PlateSelectionSecond();
     }
-    
-    private void PlateMovements(){
-    
-    }
 
     private void PlateSelectionFirst()
     {
-        _counter++;
-        _numberOfMovements = Random.Range(0,_plates.Length);
         _firstPlate = _plates[RandomNumber()];
         _firstPlate.AnimationSelected();
         TeleportCard();
@@ -51,7 +45,7 @@ public class Thimbles : MonoBehaviour
 
     private void MotionPlate()
     {
-        AnimationPlate();
+        StartCoroutine(PlateMovements());
         _firstPlate.Animations -= MotionPlate;
     }
 
@@ -61,16 +55,27 @@ public class Thimbles : MonoBehaviour
         _card.transform.localPosition = _firstPlate.transform.localPosition + Vector3.down / 10;
     }
 
-    private void AnimationPlate()
+    // private void AnimationPlate()
+    // {
+    //     DOTween.Sequence()
+    //     .Append(_firstPlate.transform.DOLocalMove(_secondPlate.transform.localPosition, 0.5f))
+    //     .Append(_secondPlate.transform.DOLocalMove(_firstPlate.transform.localPosition, 0.5f));
+    // }
+
+    private IEnumerator PlateMovements()
     {
-        Debug.Log("ok");
         _firstPlate.CardAdd(_card);
-        DOTween.Sequence()
-        .Append(_firstPlate.transform.DOLocalMove(_secondPlate.transform.localPosition, 0.5f))
-        .Append(_secondPlate.transform.DOLocalMove(_firstPlate.transform.localPosition, 0.5f))
-        .OnComplete(PlateSelectionSecond)
-        .SetLoops(3);
+        for (int i = 0; i < 3; i++)
+        {
+            // PlateSelectionSecond();
+            // AnimationPlate();
+            yield return new WaitForSeconds(1f);
+        }
     }
+
+
+
+
 
 
 }

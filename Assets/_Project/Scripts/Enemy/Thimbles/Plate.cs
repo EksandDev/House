@@ -8,6 +8,7 @@ public class Plate : MonoBehaviour, IInteractable
     public Vector3 StartPos { get; private set; }
     private Card _card;
     public Action Animations;
+
     private void Start()
     {
         StartPos = transform.localPosition;
