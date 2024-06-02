@@ -16,6 +16,7 @@ public class Plate : MonoBehaviour, IInteractable
 
     public void AnimationSelected()
     {
+
         DOTween.Sequence()
              .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
              .AppendInterval(1f)
@@ -32,6 +33,12 @@ public class Plate : MonoBehaviour, IInteractable
     {
         _card = card;
         _card.transform.SetParent(transform);
+    }
+    public void CardDel()
+    {
+        if (_card != null)
+            _card.transform.SetParent(null);
+
     }
 
 }
