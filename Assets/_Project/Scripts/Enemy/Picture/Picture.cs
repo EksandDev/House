@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Picture : Enemy, IInteractable
+public class Picture : Enemy, IClickable
 {
     public bool _agressive;
     private void Start()
@@ -15,6 +15,13 @@ public class Picture : Enemy, IInteractable
         EnemyIsActivated?.Invoke();
     }
 
+    public void OnClick()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Deactivate();
+        }
+    }
     public override void Deactivate()
     {
         if (_agressive)

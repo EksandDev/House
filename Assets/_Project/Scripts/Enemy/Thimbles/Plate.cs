@@ -3,7 +3,7 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
-public class Plate : MonoBehaviour, IInteractable
+public class Plate : MonoBehaviour, IClickable
 {
     public Vector3 StartPos { get; private set; }
     private Card _card;
@@ -14,9 +14,16 @@ public class Plate : MonoBehaviour, IInteractable
         StartPos = transform.localPosition;
     }
 
+    public void OnClick()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AnimationSelected();
+            CardDel();
+        }
+    }
     public void AnimationSelected()
     {
-
         DOTween.Sequence()
              .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
              .AppendInterval(1f)
