@@ -5,30 +5,58 @@ using UnityEngine;
 
 public class Plate : MonoBehaviour, IClickable
 {
-    public Vector3 StartPos { get; private set; }
+    private Vector3 _startPos;
     private Card _card;
     public Action Animations;
+    private Thimbles _thimbles;
 
     private void Start()
     {
-        StartPos = transform.localPosition;
+        _thimbles = GetComponentInParent<Thimbles>();
     }
 
     public void OnClick()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            AnimationSelected();
-            CardDel();
+            _startPos = transform.localPosition;
+            AnimationCheckTheCard();
+            CardDelParent();
         }
     }
+
+    private void CheckTheCard()
+    {
+        _thimbles.SelectedThimbles(true);
+        if (_card != null)
+        {
+            _card.ChangingVisibility(false);
+            _card = null;
+            Debug.Log("Наперстки обезврежены");
+            return;
+        }
+        Debug.Log("Неверный наперсток!! Лови аплиуху!");
+    }
+
+
     public void AnimationSelected()
     {
         DOTween.Sequence()
              .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
              .AppendInterval(1f)
-             .Append(transform.DOLocalMoveY(StartPos.y, 0.5f))
+             .Append(transform.DOLocalMoveY(_startPos.y, 0.5f))
              .OnComplete(EndAnimation);
+        return;
+    }
+
+    private void AnimationCheckTheCard()
+    {
+        DOTween.Sequence()
+                    .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
+                    .AppendInterval(1f)
+                    .Append(transform.DOLocalMoveY(_startPos.y, 0.5f))
+                    .OnComplete(CheckTheCard);
+        return;
     }
 
     private void EndAnimation()
@@ -36,16 +64,23 @@ public class Plate : MonoBehaviour, IClickable
         Animations?.Invoke();
     }
 
-    public void CardAdd(Card card)
+    public void AddCardAndParent(Card card)
     {
         _card = card;
-        _card.transform.SetParent(transform);
+        AddParentCard(transform);
     }
-    public void CardDel()
+
+    public void CardDelParent()
     {
         if (_card != null)
-            _card.transform.SetParent(null);
+        {
+            AddParentCard(null);
+        }
+    }
 
+    private void AddParentCard(Transform parent)
+    {
+        _card.transform.SetParent(parent);
     }
 
 }

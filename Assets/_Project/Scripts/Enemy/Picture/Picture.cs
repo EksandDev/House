@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
 
 public class Picture : Enemy, IClickable
 {
-    public bool _agressive;
+    public bool Agressive { get; private set; }
     private void Start()
     {
         SubscribeToRespawn();
@@ -11,7 +10,7 @@ public class Picture : Enemy, IClickable
 
     public override void Activate()
     {
-        _agressive = true;
+        Agressive = true;
         EnemyIsActivated?.Invoke();
     }
 
@@ -24,9 +23,9 @@ public class Picture : Enemy, IClickable
     }
     public override void Deactivate()
     {
-        if (_agressive)
+        if (Agressive)
         {
-            _agressive = false;
+            Agressive = false;
             SubscribeToRespawn();
             transform.Rotate(Vector3.up, 180f);
         }

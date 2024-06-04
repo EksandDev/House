@@ -13,18 +13,29 @@ public class Thimbles : MonoBehaviour
     private Vector3 _one;
     private Vector3 _two;
     private Bezie _bezie = new();
+    public bool ThimbleSelection { get; private set; } = true;
+
     private void Start()
     {
         _card = GetComponentInChildren<Card>(true);
         _plates = GetComponentsInChildren<Plate>();
-        PlateSelectionFirst();
-        PlateSelectionSecond();
     }
+
+    public void Activate()
+    {
+        if (ThimbleSelection)
+        {
+            PlateSelectionFirst();
+            PlateSelectionSecond();
+            ThimbleSelection = false;
+        }
+    }
+
     private void PlateSelectionFirst()
     {
         _firstPlate = _plates[RandomNumber()];
-        _firstPlate.AnimationSelected();
         TeleportCard();
+        _firstPlate.AnimationSelected();
         _firstPlate.Animations += MotionPlate;
     }
     private void PlateSelectionSecond()
@@ -48,11 +59,11 @@ public class Thimbles : MonoBehaviour
     private void TeleportCard()
     {
         _card.gameObject.SetActive(true);
-        _card.transform.localPosition = _firstPlate.transform.localPosition + Vector3.down / 10;
+        _card.transform.position = _firstPlate.transform.position + Vector3.down / 10;
     }
     private IEnumerator PlateMovements()
     {
-        _firstPlate.CardAdd(_card);
+        _firstPlate.AddCardAndParent(_card);
         for (int i = 0; i < 3; i++)
         {
             PlateSelectionSecond();
@@ -72,6 +83,11 @@ public class Thimbles : MonoBehaviour
             yield return null;
         }
         _procent = 0;
+    }
+
+    public void SelectedThimbles(bool bol)
+    {
+        ThimbleSelection = bol;
     }
 
 

@@ -352,7 +352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc908a438b0989b4baff7a9309cbad7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeParameter: 2
+  _timeBetweenActivations: 0
+  _attackWaitingTime: 0
   _agressive: 0
 --- !u!114 &2588465988134698358
 MonoBehaviour:
@@ -366,6 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ab0a600b3c3f44ea00fcf21cf45d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeAnimation: 2
   _animator: {fileID: 8320176786904827046}
 --- !u!65 &1657381148781458888
 BoxCollider:

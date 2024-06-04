@@ -3,8 +3,9 @@ using UnityEngine;
 
 public abstract class Enemy : MonsterSpot
 {
-    [SerializeField] protected override float TimeToActivate { get; set; } = 10f;
-    [SerializeField] protected float _timeParameter = 2f;
+    protected override float TimeToActivate { get; set; }
+    [SerializeField] protected float _timeBetweenActivations;
+    [SerializeField] protected float _attackWaitingTime;
     private protected TimeСounting _timeCounting = new();
     private Coroutine _spawnTime;
     protected Coroutine _parametrTime;
@@ -30,7 +31,7 @@ public abstract class Enemy : MonsterSpot
     private protected void SubscribeToRespawn()
     {
         _timeCounting.TimeIsUp += CheckTimeIsUp;
-        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(TimeToActivate));
+        _spawnTime = StartCoroutine(_timeCounting.TimerCounting(_timeBetweenActivations));
     }
     private protected void UnsubscribeFromRespawn()
     {
@@ -43,7 +44,7 @@ public abstract class Enemy : MonsterSpot
     public void SubscribeCheckParametr()
     {
         _timeCounting.TimeIsUp += CheckParameter;
-        _parametrTime = StartCoroutine(_timeCounting.TimerCounting(_timeParameter));
+        _parametrTime = StartCoroutine(_timeCounting.TimerCounting(_attackWaitingTime));
     }
     protected void UnscribeCheckParametr()
     {

@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class WindowsMonsterAnimation : MonoBehaviour
+public class WindowsMonsterAnimation : EnemyAnimations
 {
     [SerializeField] private Curtain _curtain;
     private WindowsMonster _windowsMonster;
-    private Coroutine _agressiveStateTime;
-    private TimeСounting _time = new();
     private Animator _animator;
     private float currentTimeAniamation;
     private void Start()
@@ -30,7 +28,7 @@ public class WindowsMonsterAnimation : MonoBehaviour
         yield break;
     }
 
-    private void AnimationUpdate(float time)
+    public override void AnimationUpdate(float time)
     {
         float TimeAnimation = currentTimeAniamation + time;
         if (!_curtain.Open)
@@ -46,23 +44,6 @@ public class WindowsMonsterAnimation : MonoBehaviour
         }
         _animator.SetFloat("TimeAnimation", TimeAnimation);
     }
-
-
-
-    #region SubscribeAndUnsubscribeAnimation
-    private void SubscribeToAnimation()
-    {
-        _agressiveStateTime = StartCoroutine(_time.TimerCounting(10f));
-        _time.TimeAnimation += AnimationUpdate;
-    }
-
-    private void UnsubscribeFromAnimation()
-    {
-        StopCoroutine(_agressiveStateTime);
-        _time.TimeAnimation -= AnimationUpdate;
-    }
-    #endregion
-
 
     public void SetTimeAnimation(float time)
     {
