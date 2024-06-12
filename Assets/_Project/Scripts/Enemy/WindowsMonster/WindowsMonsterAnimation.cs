@@ -1,14 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class WindowsMonsterAnimation : MonoBehaviour
+public class WindowsMonsterAnimation : EnemyAnimations
 {
-    [SerializeField] private Curtain _curtain;//нужно потом поменять на некий общий тригер ну накинуть интерфейс и сделать прокидывание
+    [SerializeField] private Curtain _curtain;
     private WindowsMonster _windowsMonster;
-    private Coroutine _agressiveStateTime;
-    private TimeСounting _time = new();
     private Animator _animator;
-    ///в кода присутствуют магические числа на данный момент, но это только пока
+    private float currentTimeAniamation;
     private void Start()
     {
         _windowsMonster = GetComponent<WindowsMonster>();
@@ -18,7 +16,8 @@ public class WindowsMonsterAnimation : MonoBehaviour
 
     private IEnumerator ReverseAnimationPlay()
     {
-        _windowsMonster.SubscribeToDeactivateEnemy();
+        ResetTimeAnimation();
+        _windowsMonster.SubscribeCheckParametr();
         float tims = _animator.GetFloat("TimeAnimation");
         while (tims > 0)
         {
@@ -28,25 +27,33 @@ public class WindowsMonsterAnimation : MonoBehaviour
         }
         yield break;
     }
-    private void AnimationUpdate(float timeAnimation)
+
+    public override void AnimationUpdate(float time)
     {
+        float TimeAnimation = currentTimeAniamation + time;
         if (!_curtain.Open)
         {
             StartCoroutine(ReverseAnimationPlay());
             EnemyDeactivated();
             return;
         }
-        _animator.SetFloat("TimeAnimation", timeAnimation);
+        if (time > 0.99)
+        {
+            Debug.Log("Умер от оконного монстра!");
+            EnemyDeactivated();
+        }
+        _animator.SetFloat("TimeAnimation", TimeAnimation);
     }
-    private void SubscribeToAnimation()
+
+    public void SetTimeAnimation(float time)
     {
-        _agressiveStateTime = StartCoroutine(_time.TimerCounting(10f));
-        _time.TimeAnimation += AnimationUpdate;
+        currentTimeAniamation = time;
+        SubscribeToAnimation();
     }
-    private void UnsubscribeFromAnimation()
+
+    public void ResetTimeAnimation()
     {
-        StopCoroutine(_agressiveStateTime);
-        _time.TimeAnimation -= AnimationUpdate;
+        currentTimeAniamation = 0;
     }
     private void EnemyDeactivated()
     {

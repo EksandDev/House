@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Curtain : MonoBehaviour, IInteractable
+public class Curtain : MonoBehaviour, IClickable
 {
     private Animator _animator;
     public bool Open { get; private set; } = true;
@@ -8,15 +8,17 @@ public class Curtain : MonoBehaviour, IInteractable
     {
         _animator = GetComponent<Animator>();
     }
-    public void OpenCurtain()
+
+    public void OnClick()
     {
+        if (Input.GetKey(KeyCode.E))
+        {
+            Open = false;
+            _animator.SetBool("Open", false);
+            return;
+        }
         Open = true;
         _animator.SetBool("Open", true);
-    }
-    public void CloseCurtain()
-    {
-        Open = false;
-        _animator.SetBool("Open", false);
     }
 
 }
