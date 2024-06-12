@@ -10,8 +10,9 @@ public class Card : MonoBehaviour
         }
     }
 
-    public void SetTheParent(Transform parent)
+    public void TeleportCard(Vector3 target)
     {
-        transform.SetParent(parent);
+        gameObject.SetActive(true);
+        transform.position = target + Vector3.down / 10;
     }
 }

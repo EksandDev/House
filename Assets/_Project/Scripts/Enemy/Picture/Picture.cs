@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[RequireComponent(typeof(PictureAnimation))]
 public class Picture : Enemy, IClickable
 {
     public bool Agressive { get; private set; }

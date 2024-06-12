@@ -4,19 +4,18 @@ using UnityEngine;
 public class ButtonThimbles : MonoBehaviour, IClickable
 {
     private Vector3 _startPos;
-    private Thimbles _thimbles;
+    private ThimblesEnemy _thimbles;
     private void Start()
     {
-        _thimbles = GetComponentInParent<Thimbles>();
+        _thimbles = GetComponentInParent<ThimblesEnemy>();
         _startPos = transform.localPosition;
     }
 
     public void OnClick()
     {
-        if (Input.GetKeyDown(KeyCode.E) && _thimbles.ThimbleSelection)
+        if (Input.GetKeyDown(KeyCode.E) && _thimbles.ActivationThimbles)
         {
             StartGame();
-
             DOTween.Sequence()
             .Append(transform.DOLocalMoveY(transform.localPosition.y - 0.05f, 0.1f))
             .AppendInterval(0.1f)
@@ -26,6 +25,6 @@ public class ButtonThimbles : MonoBehaviour, IClickable
 
     private void StartGame()
     {
-        _thimbles.Activate();
+        _thimbles.ActivateGame();
     }
 }

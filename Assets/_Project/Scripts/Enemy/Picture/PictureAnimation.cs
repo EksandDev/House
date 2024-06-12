@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PictureAnimation : EnemyAnimations
 {
     [SerializeField] private Animator _animator;

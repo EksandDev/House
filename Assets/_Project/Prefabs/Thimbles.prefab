@@ -298,6 +298,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3374700285995029270}
+  - component: {fileID: 1024043064537126230}
+  - component: {fileID: 7409013622442047298}
   - component: {fileID: 3948399010576504483}
   m_Layer: 0
   m_Name: Thimbles
@@ -327,6 +329,34 @@ Transform:
   - {fileID: 4321346538331748383}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024043064537126230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676590401122156681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f259aff851fcb4f8e8ebf242f1cb88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBetweenActivations: 0
+  _attackWaitingTime: 0
+--- !u!114 &7409013622442047298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676590401122156681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407c45b3637d78248b992e3389bdf7ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBetweenActivations: 0
+  _attackWaitingTime: 0
 --- !u!114 &3948399010576504483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30485f60319e1374ea1e8c9f85ce8ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _timeBetweenActivations: 0
+  _attackWaitingTime: 0
 --- !u!1 &5201053066952525246
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e71a342002a4ec945b57445cc9366949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Allowed: 1
 --- !u!1001 &3771246902733430713
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,44 +3,46 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
-public class Plate : MonoBehaviour, IClickable
+public class Thimble : MonoBehaviour, IClickable
 {
     private Vector3 _startPos;
     private Card _card;
     public Action Animations;
-    private Thimbles _thimbles;
+    private ThimblesEnemy _thimbles;
 
     private void Start()
     {
-        _thimbles = GetComponentInParent<Thimbles>();
+        _thimbles = GetComponentInParent<ThimblesEnemy>();
     }
 
     public void OnClick()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && _thimbles.ThimbleClick)
         {
-            _startPos = transform.localPosition;
             AnimationCheckTheCard();
             CardDelParent();
+            _thimbles.ThimbleClick = false;
         }
     }
 
     private void CheckTheCard()
     {
-        _thimbles.SelectedThimbles(true);
+        // _thimbles.ActivationsThimbles(true);
         if (_card != null)
         {
             _card.ChangingVisibility(false);
             _card = null;
+            _thimbles.Deactivate();
             Debug.Log("Наперстки обезврежены");
             return;
         }
-        Debug.Log("Неверный наперсток!! Лови аплиуху!");
+        _thimbles.Baff();
     }
 
 
     public void AnimationSelected()
     {
+        _startPos = transform.localPosition;
         DOTween.Sequence()
              .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
              .AppendInterval(1f)
@@ -51,6 +53,7 @@ public class Plate : MonoBehaviour, IClickable
 
     private void AnimationCheckTheCard()
     {
+        _startPos = transform.localPosition;
         DOTween.Sequence()
                     .Append(transform.DOLocalMoveY(transform.localPosition.y + 0.3f, 0.5f))
                     .AppendInterval(1f)
