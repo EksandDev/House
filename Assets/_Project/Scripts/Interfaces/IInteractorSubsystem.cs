@@ -2,5 +2,5 @@
 
 public interface IInteractorSubsystem
 {
-    public void TryInteract(RaycastHit hit);
+    public void TryInteract(Collider hitCollider);
 }
